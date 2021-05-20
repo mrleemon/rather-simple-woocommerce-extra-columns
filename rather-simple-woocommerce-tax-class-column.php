@@ -2,6 +2,7 @@
 /*
 Plugin Name: Rather Simple WooCommerce Tax Class Column
 Plugin URI: 
+Update URI: false
 Description: Adds a tax class column to the admin products list.
 Version: 1.0
 WC tested up to: 4.4.1
