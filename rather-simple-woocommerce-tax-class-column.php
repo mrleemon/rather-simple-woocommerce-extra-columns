@@ -3,12 +3,14 @@
  * Plugin Name: Rather Simple WooCommerce Tax Class Column
  * Plugin URI:
  * Update URI: false
- * Description: Adds a tax class column to the admin products list.
  * Version: 1.0
+ * Requires at least: 5.3
+ * Requires PHP: 7.0
  * WC tested up to: 4.4.1
  * Author: Oscar Ciutat
  * Author URI: http://oscarciutat.com/code/
  * Text Domain: rather-simple-woocommerce-tax-class-column
+ * Description: Adds a tax class column to the admin products list.
  * License: GPLv2 or later
  *
  * This program is free software; you can redistribute it and/or modify
