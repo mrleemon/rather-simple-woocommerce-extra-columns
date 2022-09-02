@@ -71,7 +71,10 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 		add_filter( 'manage_edit-product_columns', array( $this, 'product_extra_columns' ) );
 		add_filter( 'manage_product_posts_custom_column', array( $this, 'product_extra_column' ) );
 		add_filter( 'manage_edit-product_sortable_columns', array( $this, 'product_extra_sortable_columns' ) );
-		add_filter( 'request', array( $this, 'sort_columns' ) );
+
+		// Make columns sortable.
+		add_filter( 'request', array( $this, 'sort_meta_columns' ) );
+		add_filter( 'posts_clauses', array( $this, 'sort_taxonomy_columns' ), 10, 2 );
 
 	}
 
@@ -144,17 +147,18 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 	 */
 	public function product_extra_sortable_columns( $columns ) {
 		$custom = array(
-			'tax_class' => 'tax_class'
+			'tax_class'      => 'tax_class',
+			'shipping_class' => 'shipping_class',
 		);
 		return wp_parse_args( $custom, $columns );
 	}
 
 	/**
-	 * Sort columns.
+	 * Sort meta columns.
 	 *
 	 * @param array $vars  The array of requested query variables.
 	 */
-	public function sort_columns( $vars ) {
+	public function sort_meta_columns( $vars ) {
 		if ( isset( $vars['orderby'] ) && 'tax_class' === $vars['orderby'] ) {
 			$vars = array_merge(
 				$vars,
@@ -165,6 +169,32 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 			);
 		}
 		return $vars;
+	}
+
+	/**
+	 * Sort taxonomy columns.
+	 *
+	 * @param array    $clauses   Associative array of the clauses for the query.
+	 * @param WP_Query $wp_query  The WP_Query instance (passed by reference).
+	 */
+	public function sort_taxonomy_columns( $clauses, $wp_query ) {
+		global $wpdb;
+		if ( isset( $wp_query->query['orderby'] ) && 'shipping_class' === $wp_query->query['orderby'] ) {
+			$clauses['join']   .= <<<SQL
+				LEFT OUTER JOIN {$wpdb->term_relationships} ON {$wpdb->posts}.ID={$wpdb->term_relationships}.object_id
+				LEFT OUTER JOIN {$wpdb->term_taxonomy} USING (term_taxonomy_id)
+				LEFT OUTER JOIN {$wpdb->terms} USING (term_id)
+			SQL;
+			$clauses['where']  .= "AND (taxonomy = 'product_shipping_class' OR taxonomy IS NULL)";
+			$clauses['groupby'] = 'object_id';
+			$clauses['orderby'] = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC)";
+			if ( strtoupper( $wp_query->get( 'order' ) ) === 'ASC' ) {
+				$clauses['orderby'] .= 'ASC';
+			} else {
+				$clauses['orderby'] .= 'DESC';
+			}
+		}
+		return $clauses;
 	}
 
 }
