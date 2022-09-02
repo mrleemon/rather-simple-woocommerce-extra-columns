@@ -1,3 +1,4 @@
-table.wp-list-table .column-tax_class {
+table.wp-list-table .column-tax_class,
+table.wp-list-table .column-shipping_class {
     width: 11% !important;
 }
