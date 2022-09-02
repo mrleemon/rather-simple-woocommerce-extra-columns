@@ -180,19 +180,16 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 	public function sort_taxonomy_columns( $clauses, $wp_query ) {
 		global $wpdb;
 		if ( isset( $wp_query->query['orderby'] ) && 'shipping_class' === $wp_query->query['orderby'] ) {
-			$clauses['join']   .= <<<SQL
+			$clauses['join'] .= <<<SQL
 				LEFT OUTER JOIN {$wpdb->term_relationships} ON {$wpdb->posts}.ID={$wpdb->term_relationships}.object_id
 				LEFT OUTER JOIN {$wpdb->term_taxonomy} USING (term_taxonomy_id)
 				LEFT OUTER JOIN {$wpdb->terms} USING (term_id)
-			SQL;
-			$clauses['where']  .= "AND (taxonomy = 'product_shipping_class' OR taxonomy IS NULL)";
-			$clauses['groupby'] = 'object_id';
-			$clauses['orderby'] = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC)";
-			if ( strtoupper( $wp_query->get( 'order' ) ) === 'ASC' ) {
-				$clauses['orderby'] .= 'ASC';
-			} else {
-				$clauses['orderby'] .= 'DESC';
-			}
+				SQL;
+
+				$clauses['where']   .= " AND (taxonomy = 'product_shipping_class' OR taxonomy IS NULL)";
+				$clauses['groupby']  = 'object_id';
+				$clauses['orderby']  = "GROUP_CONCAT({$wpdb->terms}.name ORDER BY name ASC) ";
+				$clauses['orderby'] .= ( 'ASC' === strtoupper( $wp_query->get( 'order' ) ) ) ? 'ASC' : 'DESC';
 		}
 		return $clauses;
 	}
