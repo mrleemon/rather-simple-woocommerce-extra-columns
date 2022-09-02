@@ -71,6 +71,7 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 		add_filter( 'manage_edit-product_columns', array( $this, 'product_extra_columns' ) );
 		add_filter( 'manage_product_posts_custom_column', array( $this, 'product_extra_column' ) );
 		add_filter( 'manage_edit-product_sortable_columns', array( $this, 'product_extra_sortable_columns' ) );
+		add_filter( 'request', array( $this, 'sort_columns' ) );
 
 	}
 
@@ -134,6 +135,36 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 				}
 			}
 		}
+	}
+
+	/**
+	 * Define which extra columns are sortable.
+	 *
+	 * @param array $columns An array of existing columns.
+	 */
+	public function product_extra_sortable_columns( $columns ) {
+		$custom = array(
+			'tax_class' => 'tax_class'
+		);
+		return wp_parse_args( $custom, $columns );
+	}
+
+	/**
+	 * Sort columns.
+	 *
+	 * @param array $vars  The array of requested query variables.
+	 */
+	public function sort_columns( $vars ) {
+		if ( isset( $vars['orderby'] ) && 'tax_class' === $vars['orderby'] ) {
+			$vars = array_merge(
+				$vars,
+				array(
+					'orderby'  => 'meta_value',
+					'meta_key' => '_tax_class',
+				)
+			);
+		}
+		return $vars;
 	}
 
 }
