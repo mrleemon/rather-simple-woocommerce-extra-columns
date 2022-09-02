@@ -9,7 +9,7 @@
  * WC tested up to: 4.4.1
  * Author: Oscar Ciutat
  * Author URI: http://oscarciutat.com/code/
- * Text Domain: rather-simple-woocommerce-tax-class-column
+ * Text Domain: rather-simple-woocommerce-extra-columns
  * Description: Adds extra columns to the admin products list.
  * License: GPLv2 or later
  *
@@ -70,6 +70,7 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 		// Add columns.
 		add_filter( 'manage_edit-product_columns', array( $this, 'product_extra_columns' ) );
 		add_filter( 'manage_product_posts_custom_column', array( $this, 'product_extra_column' ) );
+		add_filter( 'manage_edit-product_sortable_columns', array( $this, 'product_extra_sortable_columns' ) );
 
 	}
 
@@ -93,7 +94,7 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 	}
 
 	/**
-	 * Adds a product tax class column.
+	 * Adds extra columns.
 	 *
 	 * @param array $columns An associative array of column headings.
 	 */
@@ -110,7 +111,7 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 	}
 
 	/**
-	 * Displays product tax class.
+	 * Displays extra columns.
 	 *
 	 * @param string $column  The name of the column to display.
 	 */
