@@ -65,6 +65,7 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 	public function plugin_setup() {
 
 		// Init.
+		add_action( 'before_woocommerce_init', array( $this, 'declare_wchpos_compatibility' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
 
 		// Add columns.
@@ -78,12 +79,19 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 
 	}
 
-
 	/**
 	 * Constructor. Intentionally left empty and public.
 	 */
 	public function __construct() {}
 
+	/**
+	 * Declare WooCommerce High-Performance Order Storage compatibility
+	 */
+	public function declare_wchpos_compatibility() {
+		if ( class_exists( '\Automattic\WooCommerce\Utilities\FeaturesUtil' ) ) {
+			\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		}
+	}
 
 	/**
 	 * Enqueues scripts and styles in the frontend.
