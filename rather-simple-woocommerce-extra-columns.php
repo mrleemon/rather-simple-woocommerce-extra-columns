@@ -6,7 +6,7 @@
  * Version: 1.0
  * Requires at least: 5.3
  * Requires PHP: 7.0
- * WC tested up to: 4.4.1
+ * WC tested up to: 7.1
  * Author: Oscar Ciutat
  * Author URI: http://oscarciutat.com/code/
  * Text Domain: rather-simple-woocommerce-extra-columns
