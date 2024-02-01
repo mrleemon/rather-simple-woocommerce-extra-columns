@@ -53,7 +53,6 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 		}
 
 		return self::$instance;
-
 	}
 
 	/**
@@ -76,7 +75,6 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 		// Make columns sortable.
 		add_filter( 'request', array( $this, 'sort_meta_columns' ) );
 		add_filter( 'posts_clauses', array( $this, 'sort_taxonomy_columns' ), 10, 2 );
-
 	}
 
 	/**
@@ -201,7 +199,6 @@ class Rather_Simple_WooCommerce_Extra_Columns {
 		}
 		return $clauses;
 	}
-
 }
 
 if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
