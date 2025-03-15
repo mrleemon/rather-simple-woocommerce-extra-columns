@@ -11,6 +11,7 @@
  * Author: Oscar Ciutat
  * Author URI: http://oscarciutat.com/code/
  * Text Domain: rather-simple-woocommerce-extra-columns
+ * Domain Path: /languages
  * Description: Adds extra columns to the admin products list.
  * License: GPLv2 or later
  *
